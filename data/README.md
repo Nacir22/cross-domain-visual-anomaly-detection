@@ -29,3 +29,41 @@ automatiquement sans accord explicite.
 - Médical : séparation **par patient** (`split_by: patient_id`).
 - Aérien : séparation **par zone géographique** (`split_by: geographic_zone`).
 - Général : aucune version augmentée d'une même image ne franchit deux splits.
+
+## MVTec AD — structure attendue (Phase 1)
+
+Après téléchargement et extraction dans `data/raw/mvtec_ad/`, chaque catégorie
+`<cat>` (ex. `bottle`) doit avoir cette forme :
+
+```text
+data/raw/mvtec_ad/<cat>/
+├── train/good/*.png              # images NORMALES uniquement (-> train + val)
+├── test/good/*.png               # normales de test
+├── test/<defect>/*.png           # images anormales (rayure, fissure, ...)
+└── ground_truth/<defect>/*_mask.png   # masques pixel (vérité terrain)
+```
+
+### Préparer les données
+
+```bash
+# 1. Afficher les instructions officielles + licence
+python scripts/download_data.py
+
+# 2. (Sans téléchargement) générer une catégorie SYNTHÉTIQUE pour tester/CI
+python scripts/download_data.py --synthetic
+
+# 3. Vérifier une catégorie téléchargée
+python scripts/download_data.py --verify --category bottle
+```
+
+### Découpage train / val / test
+
+Réalisé par `anomaly_detection.data.splits.create_splits` :
+
+- **train** et **val** proviennent exclusivement de `train/good` (normales),
+  mélangées avec une **graine fixe** puis découpées selon `val_fraction`.
+- **test** provient du dossier `test/` (jamais touché par le choix de seuil) et
+  contient normales + anomalies, avec masques quand disponibles.
+
+Les splits sont sauvegardés en JSON dans `data/interim/` (chemins relatifs,
+donc portables) et rechargeables à l'identique.
