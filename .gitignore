@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Tests / couverture
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Ruff / mypy
+.ruff_cache/
+.mypy_cache/
+
+# Données (JAMAIS committer les datasets volumineux)
+data/raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+
+# Modèles et artefacts lourds
+models/*
+!models/.gitkeep
+mlruns/*
+!mlruns/.gitkeep
+reports/figures/*
+!reports/figures/.gitkeep
+reports/metrics/*
+!reports/metrics/.gitkeep
+
+# LaTeX (fichiers intermédiaires)
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz
+docs/*.bbl
+docs/*.blg
+# Exception portfolio : le PDF compilé PEUT être versionné.
+!docs/rapport.pdf
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Environnement / secrets
+.env
+*.key
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db

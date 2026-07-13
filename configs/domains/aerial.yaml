@@ -1,0 +1,5 @@
+# Domaine aérien — dataset xView2 / xBD (satellite pré/post catastrophe).
+domain: aerial
+dataset_name: xview2
+has_pixel_masks: true      # polygones de bâtiments -> localisation exploitable
+split_by: geographic_zone  # éviter la fuite entre tuiles géographiquement proches

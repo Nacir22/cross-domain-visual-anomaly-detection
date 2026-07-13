@@ -1,0 +1,5 @@
+# Baseline : autoencodeur convolutif. Score = erreur de reconstruction.
+model: autoencoder
+latent_dim: 128
+base_channels: 32
+learning_rate: 0.001

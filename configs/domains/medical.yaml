@@ -1,0 +1,7 @@
+# Domaine médical — dataset RSNA Pneumonia (radiographie thoracique).
+# ATTENTION : pas de masque pixel -> métriques image-level UNIQUEMENT.
+# Ce module n'est PAS un dispositif de diagnostic.
+domain: medical
+dataset_name: rsna_pneumonia
+has_pixel_masks: false
+split_by: patient_id      # éviter toute fuite entre images d'un même patient

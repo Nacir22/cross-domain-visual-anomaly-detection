@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anomaly-detection"
+version = "0.1.0"
+description = "Cross-Domain Visual Anomaly Detection: one pipeline for industry, healthcare and aerial imagery."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Hakim" }]
+keywords = ["anomaly-detection", "computer-vision", "pytorch", "mlops"]
+
+# Les versions résolues vivent dans requirements.txt (reproductibilité).
+# Ici, on ne déclare que les dépendances directes de haut niveau.
+dependencies = [
+    "torch",
+    "torchvision",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "pillow",
+    "opencv-python-headless",
+    "albumentations",
+    "matplotlib",
+    "pyyaml",
+    "pydantic>=2",
+    "mlflow",
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "streamlit",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "pre-commit",
+]
+
+[project.urls]
+Repository = "https://github.com/OWNER/cross-domain-visual-anomaly-detection"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ----------------------------------------------------------------------
+# Ruff : linter + formateur (remplace Black, comme autorisé par le cahier
+# des charges). On documente ce choix : un seul outil, plus simple à maintenir.
+# ----------------------------------------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+src = ["src", "tests", "scripts", "app"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "D"]
+ignore = ["D203", "D213"]  # conventions de docstring mutuellement exclusives
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]          # docstrings non exigées dans les tests
+"scripts/*" = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# ----------------------------------------------------------------------
+# pytest
+# ----------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
+pythonpath = ["src"]
+markers = [
+    "smoke: test rapide de bout en bout sans entraînement lourd",
+    "integration: test d'intégration (API, pipeline)",
+]

@@ -1,0 +1,19 @@
+# Dépendances directes (non figées). Générer requirements.txt avec :
+#   pip-compile requirements.in
+# ou installer via :  pip install -e .
+torch
+torchvision
+numpy
+pandas
+scikit-learn
+pillow
+opencv-python-headless
+albumentations
+matplotlib
+pyyaml
+pydantic>=2
+mlflow
+fastapi
+uvicorn[standard]
+python-multipart
+streamlit

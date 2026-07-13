@@ -1,0 +1,9 @@
+# Profil d'ENTRAÎNEMENT réel — Google Colab, runtime GPU.
+# Objectif : résultats présentables. À lancer depuis les notebooks Colab.
+profile: colab_gpu
+device: cuda
+image_size: 224
+batch_size: 16
+num_workers: 2
+epochs: 20
+mixed_precision: true

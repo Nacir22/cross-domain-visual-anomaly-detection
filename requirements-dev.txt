@@ -1,0 +1,6 @@
+# Dépendances de développement uniquement.
+pytest
+pytest-cov
+ruff
+pre-commit
+pip-tools

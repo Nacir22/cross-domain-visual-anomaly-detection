@@ -1,0 +1,5 @@
+# Domaine industriel — dataset MVTec AD (licence CC BY-NC-SA 4.0, non commercial).
+domain: industrial
+dataset_name: mvtec_ad
+category: bottle          # catégorie par défaut pour le profil léger
+has_pixel_masks: true     # MVTec fournit des masques -> métriques pixel possibles

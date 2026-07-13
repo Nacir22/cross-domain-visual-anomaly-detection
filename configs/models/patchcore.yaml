@@ -1,0 +1,6 @@
+# Modèle avancé : PatchCore (banque de features d'un backbone pré-entraîné).
+# Ne s'entraîne pas par descente de gradient -> praticable sur CPU.
+model: patchcore
+backbone: resnet18          # léger, adapté au profil CPU
+coreset_ratio: 0.01         # sous-échantillonnage agressif de la banque mémoire
+n_neighbors: 9

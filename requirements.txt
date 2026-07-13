@@ -1,0 +1,13 @@
+# Fichier reproductible avec versions résolues.
+# NON figé automatiquement : à générer sur la machine cible pour tenir compte
+# des différences CPU / CUDA / Windows / Linux avec :
+#     pip install pip-tools
+#     pip-compile requirements.in --output-file requirements.txt
+#
+# Pour l'installation CPU locale de PyTorch (Windows), préférer :
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#
+# Tant que la compilation n'a pas été exécutée sur la machine cible, ce
+# fichier reste volontairement un pointeur vers requirements.in afin de ne
+# pas figer des versions non vérifiées.
+-r requirements.in

@@ -1,0 +1,9 @@
+# Profil de DÉVELOPPEMENT — poste Windows, CPU uniquement.
+# Objectif : vérifier le pipeline de bout en bout, PAS la performance.
+profile: local_cpu
+device: cpu
+image_size: 224
+batch_size: 2
+num_workers: 0
+epochs: 2
+mixed_precision: false

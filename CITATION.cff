@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "Si vous utilisez ce projet, merci de le citer comme ci-dessous."
+title: "Cross-Domain Visual Anomaly Detection"
+authors:
+  - family-names: Hakim
+version: 0.1.0
+date-released: 2026-07-13
+license: MIT

@@ -1,0 +1,3 @@
+# Motifs ignorés par DVC (si DVC est adopté plus tard).
+/tmp
+*.tmp

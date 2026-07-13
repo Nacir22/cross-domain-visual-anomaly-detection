@@ -1,0 +1,25 @@
+name: Build docs
+
+on:
+  push:
+    paths:
+      - "docs/**"
+  workflow_dispatch:
+
+jobs:
+  latex:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile LaTeX report
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: rapport.tex
+          working_directory: docs
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-pdf
+          path: docs/rapport.pdf

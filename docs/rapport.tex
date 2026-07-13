@@ -1,0 +1,65 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{Cross-Domain Visual Anomaly Detection\\
+\large One pipeline, three domains: industry, healthcare and aerial imagery}
+\author{Hakim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Ce projet construit un pipeline unique de détection d'anomalies visuelles
+\emph{normal-only} appliqué à trois domaines (industrie, santé, aérien). Le
+système apprend uniquement sur des images normales, produit un score
+d'anomalie, une décision seuillée et une carte de chaleur.
+\textbf{Résultats : À compléter après expérimentation.}
+\end{abstract}
+
+\section{Problème et motivation}
+Les anomalies sont rares et coûteuses à annoter. Apprendre le
+« normal » puis mesurer l'écart est souvent plus réaliste que collecter tous
+les défauts possibles. \emph{À compléter.}
+
+\section{Données}
+MVTec AD (industrie), RSNA Pneumonia (santé, image-level), xView2/xBD
+(aérien). Sources, licences et méthodes de séparation : \emph{À compléter.}
+
+\section{Méthode}
+Preprocessing, autoencodeur convolutif, PatchCore, score d'anomalie,
+génération de heatmap, sélection du seuil. Schéma du pipeline : \emph{À
+compléter.}
+
+\section{Résultats}
+Tableaux image-level et pixel-level : \emph{À compléter après expérimentation.}
+
+\section{Transférabilité}
+Comparaison des trois domaines : \emph{À compléter.}
+
+\section{Architecture et MLOps}
+Données $\rightarrow$ validation $\rightarrow$ preprocessing $\rightarrow$
+entraînement $\rightarrow$ suivi MLflow $\rightarrow$ évaluation $\rightarrow$
+export $\rightarrow$ API $\rightarrow$ interface $\rightarrow$ monitoring.
+
+\section{Limites et éthique}
+Biais des datasets, changement de domaine, faux négatifs, interprétation
+excessive des heatmaps, confidentialité, RGPD, anonymisation. \textbf{Le
+module médical n'est pas un dispositif de diagnostic.}
+
+\section{Compétences démontrées}
+Computer Vision, PyTorch, détection d'anomalies, évaluation,
+interprétabilité, API, Docker, CI, tests, MLOps, communication scientifique.
+
+\section{Questions d'entretien}
+\emph{À compléter (8 à 10 questions/réponses).}
+
+\end{document}
