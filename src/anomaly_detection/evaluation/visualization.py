@@ -84,13 +84,14 @@ def plot_pr_curve(labels: np.ndarray, scores: np.ndarray, path: str | Path) -> P
     return out
 
 
-def plot_confusion_matrix(
-    tn: int, fp: int, fn: int, tp: int, path: str | Path
-) -> Path:
+def plot_confusion_matrix(tn: int, fp: int, fn: int, tp: int, path: str | Path) -> Path:
     """Affiche la matrice de confusion sous forme de tableau coloré.
 
     Args:
-        tn: Vrais négatifs. fp: Faux positifs. fn: Faux négatifs. tp: Vrais positifs.
+        tn: Vrais négatifs.
+        fp: Faux positifs.
+        fn: Faux négatifs.
+        tp: Vrais positifs.
         path: Chemin du PNG de sortie.
 
     Returns:
@@ -174,7 +175,7 @@ def save_examples_gallery(
 
     if not examples:
         axes[0].text(0.5, 0.5, "Aucun exemple", ha="center", va="center")
-    for ax, ex in zip(axes, examples):
+    for ax, ex in zip(axes, examples, strict=False):
         img = ex["image"]
         pil = img if isinstance(img, Image.Image) else Image.open(img)
         ax.imshow(pil.convert("RGB"))

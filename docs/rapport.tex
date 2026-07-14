@@ -77,6 +77,23 @@ PatchCore    & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à
 \caption{Résultats pixel-level (masques disponibles). \emph{À compléter.}}
 \end{table}
 
+\subsection{Comparaison des modèles (qualité et coût)}
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Critère & Autoencodeur & PatchCore \\
+\midrule
+AUROC image & \emph{à compl.} & \emph{à compl.} \\
+Temps d'inférence (ms/img) & \emph{à compl.} & \emph{à compl.} \\
+Empreinte mémoire (banque, Mo) & 0 & \emph{à compl.} \\
+Entraînement & gradient (époques) & construction de mémoire \\
+Qualité des heatmaps & \emph{à compl.} & \emph{à compl.} \\
+\bottomrule
+\end{tabular}
+\caption{Compromis qualité / coût. Généré par \texttt{scripts/compare\_models.py}.}
+\end{table}
+
 Analyse des erreurs (faux positifs, faux négatifs) et cartes de chaleur :
 figures générées dans \texttt{reports/figures/}. \emph{À compléter.}
 

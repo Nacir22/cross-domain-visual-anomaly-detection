@@ -38,7 +38,7 @@ def build_transforms(
     *,
     train: bool = False,
     normalize: bool = True,
-) -> "Callable[[Image], torch.Tensor]":
+) -> Callable[[Image], torch.Tensor]:
     """Construit le pipeline de transformation d'une image.
 
     Args:
@@ -70,7 +70,7 @@ def build_transforms(
     return transforms.Compose(steps)
 
 
-def build_mask_transform(image_size: int = 224) -> "Callable[[Image], torch.Tensor]":
+def build_mask_transform(image_size: int = 224) -> Callable[[Image], torch.Tensor]:
     """Construit la transformation d'un masque de vérité terrain (pixel-level).
 
     Un masque indique, pixel par pixel, où se trouve l'anomalie. On le

@@ -46,7 +46,11 @@ def test_train_save_reload_and_infer(synthetic_mvtec: Path, tmp_path: Path):
         device=torch.device("cpu"),
         checkpoint_path=ckpt,
         seed=0,
-        extra={"model": "autoencoder", "model_config": MODEL_CONFIG, "image_size": SIZE},
+        extra={
+            "model": "autoencoder",
+            "model_config": MODEL_CONFIG,
+            "image_size": SIZE,
+        },
     )
 
     # 1) L'entraînement produit une perte finie.
@@ -65,5 +69,5 @@ def test_train_save_reload_and_infer(synthetic_mvtec: Path, tmp_path: Path):
 
     assert isinstance(result["anomaly_score"], float)
     assert result["anomaly_map"].shape == (SIZE, SIZE)
-    assert 0.0 <= float(result["anomaly_map"].min())
+    assert float(result["anomaly_map"].min()) >= 0.0
     assert float(result["anomaly_map"].max()) <= 1.0

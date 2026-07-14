@@ -58,9 +58,12 @@ src = ["src", "tests", "scripts", "app"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "D"]
-ignore = ["D203", "D213"]  # conventions de docstring mutuellement exclusives
+# D203/D213 : conventions de docstring mutuellement exclusives.
+# D107 : les arguments de __init__ sont documentés dans la docstring de classe.
+ignore = ["D203", "D213", "D107"]
 
 [tool.ruff.lint.per-file-ignores]
+"notebooks/*" = ["E402", "B905", "D"]
 "tests/*" = ["D"]          # docstrings non exigées dans les tests
 "scripts/*" = ["D"]
 

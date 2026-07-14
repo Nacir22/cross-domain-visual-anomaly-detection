@@ -75,7 +75,9 @@ def generate_synthetic_mvtec(
         Le chemin du dossier de la catégorie créée.
 
     Example:
-        >>> path = generate_synthetic_mvtec("/tmp/data", n_train_good=4)  # doctest: +SKIP
+        >>> path = generate_synthetic_mvtec(
+        ...     "/tmp/data", n_train_good=4
+        ... )  # doctest: +SKIP
         >>> (path / "train" / "good").is_dir()  # doctest: +SKIP
         True
     """

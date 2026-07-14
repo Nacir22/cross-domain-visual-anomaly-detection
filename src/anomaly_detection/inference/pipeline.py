@@ -48,10 +48,21 @@ def load_model_from_checkpoint(
     device = device or resolve_device("auto")
     payload = torch.load(path, map_location=device)
     model_config = payload.get("model_config", {})
+    model_name = payload.get("model", "autoencoder")
 
-    # Seul l'autoencodeur existe en Phase 2 ; PatchCore sera ajouté en Phase 4.
-    model = build_autoencoder(model_config)
-    model.load_state_dict(payload["state_dict"])
+    if model_name == "patchcore":
+        # PatchCore : on reconstruit le backbone (poids ImageNet) et on réinjecte
+        # la banque mémoire sauvegardée. Rien n'est appris par gradient.
+        from anomaly_detection.models.patchcore import build_patchcore
+
+        model = build_patchcore(model_config)
+        bank = payload.get("memory_bank")
+        if bank is not None:
+            model.memory_bank = bank.to(device)
+    else:
+        model = build_autoencoder(model_config)
+        model.load_state_dict(payload["state_dict"])
+
     model.to(device)
     model.eval()
     return model, payload
@@ -80,7 +91,7 @@ class AnomalyInferencePipeline:
     @classmethod
     def from_checkpoint(
         cls, checkpoint_path: str | Path, image_size: int = 224
-    ) -> "AnomalyInferencePipeline":
+    ) -> AnomalyInferencePipeline:
         """Construit le pipeline directement depuis un checkpoint.
 
         La taille d'image est lue dans le checkpoint si disponible.

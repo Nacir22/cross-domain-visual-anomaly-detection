@@ -12,7 +12,9 @@ IMAGE_SIZE = 32
 
 
 def test_train_split_is_all_normal(synthetic_mvtec: Path):
-    ds = MVTecDataset(synthetic_mvtec, "synthetic", split="train", image_size=IMAGE_SIZE)
+    ds = MVTecDataset(
+        synthetic_mvtec, "synthetic", split="train", image_size=IMAGE_SIZE
+    )
     assert len(ds) > 0
     assert all(ds[i]["label"] == 0 for i in range(len(ds)))
 

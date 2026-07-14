@@ -141,7 +141,9 @@ def train_autoencoder(
 
     # Si aucune validation n'a permis de sauvegarder (val vide), on sauve la fin.
     if saver.best_epoch == -1:
-        saver.step(model, val_loss=history.train[-1] if history.train else 0.0, epoch=epochs)
+        saver.step(
+            model, val_loss=history.train[-1] if history.train else 0.0, epoch=epochs
+        )
 
     return history
 

@@ -58,8 +58,9 @@ def image_level_metrics(
 
     Example:
         >>> import numpy as np
-        >>> m = image_level_metrics(np.array([0, 0, 1, 1]),
-        ...                         np.array([0.1, 0.2, 0.8, 0.9]), 0.5)
+        >>> m = image_level_metrics(
+        ...     np.array([0, 0, 1, 1]), np.array([0.1, 0.2, 0.8, 0.9]), 0.5
+        ... )
         >>> m["auroc"], m["f1"]
         (1.0, 1.0)
     """
@@ -70,11 +71,7 @@ def image_level_metrics(
     tn, fp, fn, tp = confusion_matrix(labels, preds, labels=[0, 1]).ravel()
     precision = tp / (tp + fp) if (tp + fp) else 0.0
     recall = tp / (tp + fn) if (tp + fn) else 0.0
-    f1 = (
-        2 * precision * recall / (precision + recall)
-        if (precision + recall)
-        else 0.0
-    )
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
 
     return {
         "auroc": _safe_auc(labels, scores),
@@ -92,7 +89,9 @@ def image_level_metrics(
     }
 
 
-def dice_score(pred_mask: np.ndarray, true_mask: np.ndarray, eps: float = 1e-8) -> float:
+def dice_score(
+    pred_mask: np.ndarray, true_mask: np.ndarray, eps: float = 1e-8
+) -> float:
     """Coefficient de Dice entre deux masques binaires.
 
     Dice = ``2 * |A∩B| / (|A| + |B|)``. Vaut 1 si recouvrement parfait.

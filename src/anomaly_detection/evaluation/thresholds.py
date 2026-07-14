@@ -75,8 +75,9 @@ def threshold_max_f1(labels: np.ndarray, scores: np.ndarray) -> float:
 
     Example:
         >>> import numpy as np
-        >>> threshold_max_f1(np.array([0, 0, 1, 1]),
-        ...                  np.array([0.1, 0.2, 0.8, 0.9]))  # doctest: +ELLIPSIS
+        >>> threshold_max_f1(
+        ...     np.array([0, 0, 1, 1]), np.array([0.1, 0.2, 0.8, 0.9])
+        ... )  # doctest: +ELLIPSIS
         0.8
     """
     labels = np.asarray(labels).astype(int)

@@ -46,14 +46,18 @@ from anomaly_detection.evaluation.visualization import (  # noqa: E402
     plot_roc_curve,
     save_examples_gallery,
 )
-from anomaly_detection.inference.pipeline import load_model_from_checkpoint  # noqa: E402
+from anomaly_detection.inference.pipeline import (
+    load_model_from_checkpoint,  # noqa: E402
+)
 from anomaly_detection.inference.postprocessing import min_max_normalize  # noqa: E402
 from anomaly_detection.utils.device import resolve_device  # noqa: E402
 from anomaly_detection.utils.logging import configure_logging  # noqa: E402
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Évaluation d'un détecteur d'anomalies.")
+    parser = argparse.ArgumentParser(
+        description="Évaluation d'un détecteur d'anomalies."
+    )
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--domain", default="industrial")
     parser.add_argument("--model", default="autoencoder")

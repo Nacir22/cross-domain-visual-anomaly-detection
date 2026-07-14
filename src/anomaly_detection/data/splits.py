@@ -69,9 +69,7 @@ def _list_images(directory: Path) -> list[Path]:
     return sorted(files)
 
 
-def _find_mask(
-    category_dir: Path, defect_type: str, image_path: Path
-) -> str | None:
+def _find_mask(category_dir: Path, defect_type: str, image_path: Path) -> str | None:
     """Retrouve le masque associé à une image anormale, s'il existe.
 
     Convention MVTec : ``ground_truth/<defect>/<stem>_mask.png``.
@@ -154,7 +152,9 @@ def create_splits(
             is_anomaly = defect_type != _GOOD
             label = LABEL_ANOMALY if is_anomaly else LABEL_NORMAL
             for img in _list_images(defect_dir):
-                mask = _find_mask(category_dir, defect_type, img) if is_anomaly else None
+                mask = (
+                    _find_mask(category_dir, defect_type, img) if is_anomaly else None
+                )
                 splits["test"].append(_entry(img, label, defect_type, mask))
 
     return splits

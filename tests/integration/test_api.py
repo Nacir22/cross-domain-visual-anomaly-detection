@@ -5,5 +5,4 @@ import pytest
 
 @pytest.mark.integration
 @pytest.mark.skip(reason="API implémentée en Phase 6.")
-def test_api_placeholder():
-    ...
+def test_api_placeholder(): ...
