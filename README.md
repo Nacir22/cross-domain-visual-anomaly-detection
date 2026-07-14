@@ -100,3 +100,35 @@ tests/      tests unitaires et d'intégration
 
 Code sous licence **MIT** (voir `LICENSE`). Les datasets conservent leurs
 licences propres (voir `data/README.md`).
+
+## API et démonstration (Phase 6)
+
+### Lancer l'API
+
+```bash
+uvicorn app.api.main:app --reload
+# Documentation interactive : http://localhost:8000/docs
+```
+
+Routes : `GET /health`, `GET /models`, `POST /predict` (image en multipart,
+paramètres `model` et `threshold`). La réponse contient le score, la décision,
+le seuil, la heatmap (PNG base64) et les dimensions. L'API vérifie le type
+MIME, limite la taille, gère les images corrompues et **ne stocke jamais** les
+images envoyées.
+
+Exemple : `bash docs/example_request.sh`
+
+### Lancer la démo Streamlit
+
+```bash
+streamlit run app/demo/streamlit_app.py
+# nécessite l'API lancée ; configurable via ANOMALY_API_URL
+```
+
+### Docker
+
+```bash
+docker compose up --build   # API (8000) + démo (8501) + MLflow (5000)
+```
+
+> ⚠️ Le module médical n'est pas un dispositif de diagnostic.

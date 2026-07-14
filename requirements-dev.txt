@@ -4,3 +4,4 @@ pytest-cov
 ruff
 pre-commit
 pip-tools
+httpx

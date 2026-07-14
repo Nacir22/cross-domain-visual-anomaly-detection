@@ -31,6 +31,7 @@ dependencies = [
     "uvicorn[standard]",
     "python-multipart",
     "streamlit",
+    "requests",
 ]
 
 [project.optional-dependencies]
@@ -39,6 +40,7 @@ dev = [
     "pytest-cov",
     "ruff",
     "pre-commit",
+    "httpx",
 ]
 
 [project.urls]
@@ -69,6 +71,10 @@ ignore = ["D203", "D213", "D107"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI utilise Depends()/File()/Query() en valeurs par défaut (idiome standard).
+extend-immutable-calls = ["fastapi.Depends", "fastapi.File", "fastapi.Query"]
 
 [tool.ruff.format]
 docstring-code-format = true

@@ -65,3 +65,30 @@ def map_to_numpy(anomaly_map: torch.Tensor) -> np.ndarray:
         Tableau NumPy 2D ``(H, W)``.
     """
     return anomaly_map.detach().cpu().squeeze().numpy()
+
+
+def heatmap_to_base64_png(anomaly_map: np.ndarray, cmap: str = "jet") -> str:
+    """Encode une carte d'anomalie ``[0, 1]`` en image PNG colorée (base64).
+
+    Pratique pour transmettre la heatmap dans une réponse JSON d'API.
+
+    Args:
+        anomaly_map: Carte 2D de valeurs dans ``[0, 1]``.
+        cmap: Nom de la colormap matplotlib.
+
+    Returns:
+        La chaîne base64 de l'image PNG (colormap appliquée).
+    """
+    import base64
+    import io
+
+    import matplotlib.pyplot as plt
+    from PIL import Image
+
+    arr = np.clip(np.asarray(anomaly_map, dtype=float), 0.0, 1.0)
+    colored = plt.get_cmap(cmap)(arr)  # (H, W, 4) float
+    rgb = (colored[..., :3] * 255).astype(np.uint8)
+
+    buffer = io.BytesIO()
+    Image.fromarray(rgb).save(buffer, format="PNG")
+    return base64.b64encode(buffer.getvalue()).decode("ascii")
