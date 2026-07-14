@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
     runs-on: ubuntu-latest
@@ -14,8 +18,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
-      - name: Install (CPU-only PyTorch)
+      - name: Install (PyTorch CPU + package + dev)
         run: |
           python -m pip install --upgrade pip
           pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
@@ -30,8 +35,8 @@ jobs:
       - name: Import du package
         run: python -c "import anomaly_detection; print(anomaly_detection.__version__)"
 
-      - name: Tests (unitaires + smoke, sans entraînement lourd)
-        run: pytest -m "not integration" --cov=anomaly_detection
+      - name: Tests unitaires + smoke (sans entraînement lourd)
+        run: pytest -m "not integration" --cov=anomaly_detection --cov-report=term-missing
 
-      - name: Tests d'intégration API
+      - name: Tests d'intégration (API, pipeline)
         run: pytest -m integration

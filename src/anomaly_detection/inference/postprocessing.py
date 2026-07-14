@@ -8,9 +8,12 @@ la taille de l'image d'origine.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
-import torch
-import torch.nn.functional as F
+
+if TYPE_CHECKING:  # pragma: no cover
+    import torch
 
 
 def min_max_normalize(anomaly_map: np.ndarray, eps: float = 1e-8) -> np.ndarray:
@@ -50,6 +53,8 @@ def resize_anomaly_map(
     Returns:
         Carte redimensionnée ``(B, 1, height, width)``.
     """
+    import torch.nn.functional as F
+
     return F.interpolate(
         anomaly_map, size=(height, width), mode="bilinear", align_corners=False
     )

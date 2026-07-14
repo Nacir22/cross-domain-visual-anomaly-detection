@@ -2,6 +2,10 @@
 
 **One pipeline, three domains: industry, healthcare and aerial imagery.**
 
+![CI](https://github.com/OWNER/cross-domain-visual-anomaly-detection/actions/workflows/ci.yml/badge.svg) ![Python](https://img.shields.io/badge/python-3.11-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Ruff](https://img.shields.io/badge/lint-ruff-informational)
+
+> Remplacez `OWNER` par votre nom d'utilisateur GitHub pour activer le badge CI.
+
 > Une même architecture de détection d'anomalies visuelles est adaptée à
 > plusieurs contextes métiers grâce à un pipeline modulaire, configurable et
 > reproductible.
@@ -132,3 +136,16 @@ docker compose up --build   # API (8000) + démo (8501) + MLflow (5000)
 ```
 
 > ⚠️ Le module médical n'est pas un dispositif de diagnostic.
+
+## Documentation
+
+- [Model card](docs/model_card.md) — usage prévu, limites, éthique.
+- [Guide de démonstration (5 min)](docs/demo_guide.md).
+- [Questions d'entretien](docs/interviews/questions.md).
+- [Rapport LaTeX](docs/rapport.tex) — compiler avec
+  `latexmk -pdf -interaction=nonstopmode docs/rapport.tex`.
+- [Données et licences](data/README.md).
+
+## Citation
+
+Voir [`CITATION.cff`](CITATION.cff).

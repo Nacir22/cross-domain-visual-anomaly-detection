@@ -35,3 +35,13 @@ report:
 
 clean:
 	rm -rf .pytest_cache .ruff_cache **/__pycache__ *.egg-info
+
+.PHONY: api demo cross-domain
+api:
+	uvicorn app.api.main:app --reload
+
+demo:
+	streamlit run app/demo/streamlit_app.py
+
+cross-domain:
+	python scripts/run_cross_domain.py --epochs 2 --image-size 64
