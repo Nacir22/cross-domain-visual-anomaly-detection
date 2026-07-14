@@ -104,3 +104,122 @@ def generate_synthetic_mvtec(
         )
 
     return category_dir
+
+
+def _write_manifest(path: Path, rows: list[dict[str, object]]) -> None:
+    """Écrit un manifeste CSV (image, label, group[, mask])."""
+    import csv
+
+    fieldnames = ["image", "label", "group", "mask"]
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({key: row.get(key, "") for key in fieldnames})
+
+
+def generate_synthetic_medical(
+    root: str | Path,
+    n_normal_patients: int = 6,
+    n_abnormal_patients: int = 3,
+    images_per_patient: int = 2,
+    size: int = 32,
+    seed: int = 42,
+) -> Path:
+    """Génère un mini-dataset médical synthétique (façon RSNA) avec manifeste.
+
+    Chaque patient possède plusieurs images ; le groupe est ``patient_id``, ce
+    qui permet de tester le découpage PAR PATIENT (anti-fuite). Pas de masque
+    (image-level uniquement), conformément au domaine médical retenu.
+
+    Args:
+        root: Dossier racine du dataset médical.
+        n_normal_patients: Nombre de patients normaux.
+        n_abnormal_patients: Nombre de patients pathologiques.
+        images_per_patient: Images par patient.
+        size: Côté des images.
+        seed: Graine.
+
+    Returns:
+        Le chemin de la racine, contenant ``images/`` et ``manifest.csv``.
+    """
+    rng = np.random.default_rng(seed)
+    root = Path(root)
+    images_dir = root / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+
+    rows: list[dict[str, object]] = []
+    for label, prefix, count in (
+        (0, "normal", n_normal_patients),
+        (1, "pneumonia", n_abnormal_patients),
+    ):
+        for p in range(count):
+            patient_id = f"{prefix}_p{p:03d}"
+            for k in range(images_per_patient):
+                name = f"images/{patient_id}_{k}.png"
+                _save_random_image(root / name, size, rng)
+                rows.append({"image": name, "label": label, "group": patient_id})
+
+    _write_manifest(root / "manifest.csv", rows)
+    return root
+
+
+def generate_synthetic_aerial(
+    root: str | Path,
+    n_normal_zones: int = 6,
+    n_abnormal_zones: int = 3,
+    tiles_per_zone: int = 2,
+    size: int = 32,
+    seed: int = 42,
+) -> Path:
+    """Génère un mini-dataset aérien synthétique (façon xView2) avec manifeste.
+
+    Chaque zone géographique possède plusieurs tuiles ; le groupe est ``zone``,
+    ce qui permet de tester le découpage PAR ZONE (anti-fuite entre tuiles
+    voisines). Les tuiles anormales reçoivent un masque (dégâts localisés).
+
+    Args:
+        root: Dossier racine du dataset aérien.
+        n_normal_zones: Nombre de zones « no damage ».
+        n_abnormal_zones: Nombre de zones endommagées.
+        tiles_per_zone: Tuiles par zone.
+        size: Côté des tuiles.
+        seed: Graine.
+
+    Returns:
+        Le chemin de la racine, contenant ``images/``, ``masks/`` et
+        ``manifest.csv``.
+    """
+    rng = np.random.default_rng(seed)
+    root = Path(root)
+    images_dir = root / "images"
+    masks_dir = root / "masks"
+    images_dir.mkdir(parents=True, exist_ok=True)
+    masks_dir.mkdir(parents=True, exist_ok=True)
+
+    rows: list[dict[str, object]] = []
+    for label, prefix, count in (
+        (0, "nodamage", n_normal_zones),
+        (1, "damaged", n_abnormal_zones),
+    ):
+        for z in range(count):
+            zone = f"{prefix}_z{z:03d}"
+            for k in range(tiles_per_zone):
+                img_name = f"images/{zone}_{k}.png"
+                if label == 1:
+                    mask_name = f"masks/{zone}_{k}.png"
+                    _save_defect_pair(root / img_name, root / mask_name, size, rng)
+                    rows.append(
+                        {
+                            "image": img_name,
+                            "label": 1,
+                            "group": zone,
+                            "mask": mask_name,
+                        }
+                    )
+                else:
+                    _save_random_image(root / img_name, size, rng)
+                    rows.append({"image": img_name, "label": 0, "group": zone})
+
+    _write_manifest(root / "manifest.csv", rows)
+    return root

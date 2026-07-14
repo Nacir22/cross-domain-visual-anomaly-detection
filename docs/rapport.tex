@@ -98,7 +98,33 @@ Analyse des erreurs (faux positifs, faux négatifs) et cartes de chaleur :
 figures générées dans \texttt{reports/figures/}. \emph{À compléter.}
 
 \section{Transférabilité}
-Comparaison des trois domaines : \emph{À compléter.}
+
+\textbf{Ce qui est réellement commun} entre les trois domaines : le
+preprocessing, l'autoencodeur, l'entraînement, l'évaluation et l'inférence sont
+strictement identiques (mêmes classes, même code). \textbf{Ce qui est adapté}
+tient dans la configuration YAML et de fines classes dataset : la lecture des
+données et surtout la \emph{règle de découpage}, propre à chaque domaine.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Domaine & Règle de split & Masques pixel & AUROC \\
+\midrule
+Industrie (MVTec) & aléatoire (normales) & oui & \emph{à compl.} \\
+Santé (RSNA) & \textbf{par patient} & non & \emph{à compl.} \\
+Aérien (xView2) & \textbf{par zone} & oui & \emph{à compl.} \\
+\bottomrule
+\end{tabular}
+\caption{Comparaison inter-domaines. Généré par \texttt{scripts/run\_cross\_domain.py}.
+\emph{À compléter après expérimentation.}}
+\end{table}
+
+Facteurs d'impact à analyser : textures (industrie très régulière vs aérien
+très variable), résolution, type d'anomalie (défaut localisé vs changement
+diffus) et variabilité du « normal ». La séparation \textbf{par patient}
+(santé) et \textbf{par zone} (aérien) est indispensable pour éviter des scores
+faussement optimistes. \emph{À compléter.}
 
 \section{Architecture et MLOps}
 Données $\rightarrow$ validation $\rightarrow$ preprocessing $\rightarrow$

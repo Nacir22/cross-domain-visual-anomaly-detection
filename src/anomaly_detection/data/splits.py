@@ -194,3 +194,115 @@ def load_splits(path: str | Path) -> dict[str, list[dict[str, object]]]:
         raise FileNotFoundError(f"Fichier de splits introuvable : {p}")
     with p.open("r", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def records_from_manifest(
+    manifest_path: str | Path,
+    image_col: str = "image",
+    label_col: str = "label",
+    group_col: str = "group",
+    mask_col: str | None = None,
+) -> list[dict[str, object]]:
+    """Construit une liste d'entries à partir d'un manifeste CSV.
+
+    Le manifeste décrit, une ligne par image : le chemin (relatif à la racine du
+    dataset), le label (0/1), le groupe (patient, zone...) et éventuellement un
+    masque. C'est le format d'échange commun aux domaines santé et aérien.
+
+    Args:
+        manifest_path: Chemin du fichier CSV.
+        image_col: Colonne du chemin d'image.
+        label_col: Colonne du label (0 = normal, 1 = anomalie).
+        group_col: Colonne du groupe (clé anti-fuite : patient, zone...).
+        mask_col: Colonne du masque (optionnelle).
+
+    Returns:
+        Une liste de dicts ``{image, label, mask, group}``.
+
+    Raises:
+        FileNotFoundError: Si le manifeste n'existe pas.
+    """
+    import csv
+
+    path = Path(manifest_path)
+    if not path.is_file():
+        raise FileNotFoundError(f"Manifeste introuvable : {path}")
+
+    records: list[dict[str, object]] = []
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            records.append(
+                {
+                    "image": row[image_col],
+                    "label": int(row[label_col]),
+                    "group": row[group_col],
+                    "mask": row[mask_col] if mask_col and row.get(mask_col) else None,
+                }
+            )
+    return records
+
+
+def create_grouped_splits(
+    records: list[dict[str, object]],
+    train_fraction: float = 0.7,
+    val_fraction: float = 0.15,
+    seed: int = 42,
+) -> dict[str, list[dict[str, object]]]:
+    """Découpe des entries en respectant des GROUPES (anti-fuite).
+
+    Règles (cadre one-class avec séparation par groupe) :
+
+    - Un groupe (patient, zone...) ne peut appartenir qu'à un seul split.
+    - Un groupe contenant au moins une anomalie va ENTIÈREMENT dans le test
+      (ainsi aucune anomalie ne contamine train/val).
+    - Les groupes purement normaux sont répartis train / val / test-normal.
+
+    Args:
+        records: Entries ``{image, label, group, mask?}``.
+        train_fraction: Part des groupes normaux pour l'entraînement.
+        val_fraction: Part des groupes normaux pour la validation.
+        seed: Graine du mélange (reproductibilité).
+
+    Returns:
+        ``{"train": [...], "val": [...], "test": [...]}``.
+
+    Raises:
+        ValueError: Si ``train_fraction + val_fraction >= 1``.
+    """
+    if train_fraction + val_fraction >= 1.0:
+        raise ValueError("train_fraction + val_fraction doit être < 1.")
+
+    by_group: dict[str, list[dict[str, object]]] = {}
+    for rec in records:
+        by_group.setdefault(str(rec["group"]), []).append(rec)
+
+    normal_groups, anomaly_groups = [], []
+    for group, recs in by_group.items():
+        if any(int(r["label"]) == LABEL_ANOMALY for r in recs):
+            anomaly_groups.append(group)
+        else:
+            normal_groups.append(group)
+
+    normal_groups = sorted(normal_groups)
+    random.Random(seed).shuffle(normal_groups)
+    n_train = int(len(normal_groups) * train_fraction)
+    n_val = int(len(normal_groups) * val_fraction)
+    train_groups = set(normal_groups[:n_train])
+    val_groups = set(normal_groups[n_train : n_train + n_val])
+
+    splits: dict[str, list[dict[str, object]]] = {"train": [], "val": [], "test": []}
+    for group, recs in by_group.items():
+        if group in anomaly_groups:
+            splits["test"].extend(recs)
+        elif group in train_groups:
+            splits["train"].extend(recs)
+        elif group in val_groups:
+            splits["val"].extend(recs)
+        else:
+            splits["test"].extend(recs)
+    return splits
+     elif group in val_groups:
+            splits["val"].extend(recs)
+        else:
+            splits["test"].extend(recs)  # normales restantes -> test
+    return splits
