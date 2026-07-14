@@ -23,9 +23,9 @@ Le tout est exposé par une **API FastAPI** et une **interface Streamlit**.
 
 ## Statut
 
-🚧 Projet en construction — **Phase 0 (Fondations) terminée**. Les résultats
-chiffrés seront ajoutés après expérimentation ; aucune métrique n'est
-inventée.
+Pipeline complet et testé (données, modèles, évaluation, API, démo, Docker, CI).
+Les **résultats chiffrés** seront ajoutés après entraînement réel sur GPU ;
+aucune métrique n'est inventée.
 
 ## Domaines et datasets
 
@@ -91,21 +91,22 @@ tests/      tests unitaires et d'intégration
 
 ## Feuille de route
 
-- [x] Phase 0 — Fondations
-- [ ] Phase 1 — Données industrielles (MVTec AD)
-- [ ] Phase 2 — Baseline autoencodeur
-- [ ] Phase 3 — Évaluation et interprétabilité
-- [ ] Phase 4 — PatchCore + MLflow
-- [ ] Phase 5 — Transférabilité multi-domaines
-- [ ] Phase 6 — API, démo, Docker
-- [ ] Phase 7 — Industrialisation & portfolio
+- [x] Fondations et outillage (package, CI, qualité)
+- [x] Données industrielles (MVTec AD) + splits reproductibles
+- [x] Baseline autoencodeur
+- [x] Évaluation, seuillage sans fuite et interprétabilité
+- [x] Modèle avancé PatchCore + suivi MLflow
+- [x] Transférabilité multi-domaines (santé, aérien)
+- [x] API FastAPI, démo Streamlit, Docker
+- [x] Industrialisation (CI, model card, documentation)
+- [ ] Résultats chiffrés sur données réelles (entraînement GPU)
 
 ## Licence
 
 Code sous licence **MIT** (voir `LICENSE`). Les datasets conservent leurs
 licences propres (voir `data/README.md`).
 
-## API et démonstration (Phase 6)
+## API et démonstration
 
 ### Lancer l'API
 
