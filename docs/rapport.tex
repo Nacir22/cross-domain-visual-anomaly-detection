@@ -40,7 +40,45 @@ génération de heatmap, sélection du seuil. Schéma du pipeline : \emph{À
 compléter.}
 
 \section{Résultats}
-Tableaux image-level et pixel-level : \emph{À compléter après expérimentation.}
+
+\subsection{Protocole et métriques}
+Le seuil de décision est choisi sur la \textbf{validation} (percentile des
+scores d'images normales), jamais sur le test. Les stratégies F1 et coût sont
+calibrées sur une part disjointe du test. Métriques niveau image : AUROC,
+AUPRC, précision, rappel, F1, matrice de confusion, taux de faux positifs
+(FPR) et faux négatifs (FNR). Niveau pixel (si masque fiable) : AUROC/AUPRC
+pixel, Dice, IoU.
+
+\subsection{Métriques image-level}
+\begin{table}[h]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Modèle & AUROC & AUPRC & Précision & Rappel & F1 \\
+\midrule
+Autoencodeur & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} \\
+PatchCore    & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} \\
+\bottomrule
+\end{tabular}
+\caption{Résultats image-level (MVTec AD). \emph{À compléter après expérimentation.}}
+\end{table}
+
+\subsection{Métriques pixel-level}
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Modèle & AUROC pixel & AUPRC pixel & Dice & IoU \\
+\midrule
+Autoencodeur & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} \\
+PatchCore    & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} & \emph{à compl.} \\
+\bottomrule
+\end{tabular}
+\caption{Résultats pixel-level (masques disponibles). \emph{À compléter.}}
+\end{table}
+
+Analyse des erreurs (faux positifs, faux négatifs) et cartes de chaleur :
+figures générées dans \texttt{reports/figures/}. \emph{À compléter.}
 
 \section{Transférabilité}
 Comparaison des trois domaines : \emph{À compléter.}
